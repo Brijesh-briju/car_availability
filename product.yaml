@@ -1,0 +1,22 @@
+---
+swagger: "2.0"
+info:
+  title: product
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  product:
+    title: Product Brand
+    description: The rental car product brand name information for the reservation.
+    required:
+    - brand
+    type: object
+    properties:
+      brand:
+        description: The Avis, Budget, or Payless brand name.
+        enum:
+        - Avis
+        - Budget
+        - Payless
+        example: Avis
