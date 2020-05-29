@@ -1,0 +1,24 @@
+---
+swagger: "2.0"
+info:
+  title: fees
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  fees:
+    title: Fees
+    description: "Fees applied to the reservation. All available fees\r\nand surcharges\
+      \ are returned in the response. Some of these fees are included in the rate,\
+      \ and others are for information purposes only, as they may apply but are not\
+      \ included in the total tax amount."
+    type: array
+    items:
+      properties:
+        amount:
+          description: The cost of fees applied.
+          type: number
+        name:
+          description: The name of the type of fee(s) applied.
+          type: string
+          example: Domestic Security Fee
