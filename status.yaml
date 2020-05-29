@@ -1,0 +1,14 @@
+---
+swagger: "2.0"
+info:
+  title: status
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  status:
+    $ref: '#/definitions/success_status'
+    title: Request Status
+    description: A container for the success/error details.
+  success_status:
+    $ref: apicurio:85#/definitions/success_status
