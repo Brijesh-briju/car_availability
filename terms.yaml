@@ -1,0 +1,28 @@
+---
+swagger: "2.0"
+info:
+  title: terms
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  terms:
+    description: Terms and Condition
+    type: array
+    items:
+      properties:
+        type:
+          enum:
+          - location
+          - rental
+          - reservation
+          type: string
+        method:
+          enum:
+          - GET
+          type: string
+        endpoint:
+          description: End Point to call to get the terms and condition. Host name
+            will be chnaged based on environment
+          type: string
+          example: https://stage.abgapiservices.com/terms/v1/location/avis/US/EWR/en_US
