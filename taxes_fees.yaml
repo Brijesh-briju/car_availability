@@ -1,0 +1,21 @@
+---
+swagger: "2.0"
+info:
+  title: taxes_fees
+  version: 1.0.0
+definitions:
+  taxes_fees:
+    title: Rental Taxes & Fees
+    description: All available rental taxes and fees applied to the reservation
+    type: object
+    properties:
+      taxes:
+        $ref: '#/definitions/taxes'
+        description: ""
+      fees:
+        $ref: '#/definitions/fees'
+        description: ""
+  taxes:
+    $ref: apicurio:95#/definitions/taxes
+  fees:
+    $ref: apicurio:96#/definitions/fees
