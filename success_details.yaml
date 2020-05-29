@@ -1,0 +1,24 @@
+---
+swagger: "2.0"
+info:
+  title: success_details
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  success_details:
+    title: Success details
+    description: Success response metadata for all the rest APIs.
+    type: array
+    items:
+      type: object
+      properties:
+        code:
+          description: The HTTP status code value
+          type: string
+        message:
+          description: The HTTP status code message
+          type: string
+        details:
+          description: Description of the success status
+          type: string
