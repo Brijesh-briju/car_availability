@@ -1,0 +1,55 @@
+---
+swagger: "2.0"
+info:
+  title: reservation
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  reservation:
+    title: Reservation Confirmation
+    description: Confirmation information of the availability request for the rental
+      vehicle reservation, including the rate, distance limitations, and rental extras
+      (such as GPS).
+    type: object
+    properties:
+      distance:
+        $ref: '#/definitions/distance'
+        description: ""
+      pickup_location:
+        $ref: '#/definitions/pickup_location'
+        description: ""
+      dropoff_location:
+        $ref: '#/definitions/dropoff_location'
+        description: ""
+      rate_totals:
+        $ref: '#/definitions/rate_totals'
+        description: ""
+      insurance:
+        $ref: '#/definitions/insurance'
+        description: ""
+      extras:
+        $ref: '#/definitions/extras'
+        description: ""
+      terms:
+        $ref: '#/definitions/terms'
+        description: ""
+      disclaimers:
+        $ref: '#/definitions/Disclaimer'
+        description: ""
+  distance:
+    $ref: apicurio:89#/definitions/distance
+  pickup_location:
+    $ref: apicurio:92#/definitions/pickup_location
+  dropoff_location:
+    $ref: apicurio:93#/definitions/dropoff_location
+  rate_totals:
+    $ref: apicurio:104#/definitions/rate_totals
+  insurance:
+    $ref: apicurio:124#/definitions/insurance
+  extras:
+    $ref: apicurio:125#/definitions/extras
+  terms:
+    $ref: apicurio:126#/definitions/terms
+  Disclaimer:
+    $ref: apicurio:156#/definitions/Disclaimer
