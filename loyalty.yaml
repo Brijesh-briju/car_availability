@@ -1,0 +1,25 @@
+---
+swagger: "2.0"
+info:
+  title: loyalty
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  loyalty:
+    title: Frequent Traveler Programs (FTPs)
+    description: The Frequent Traveler Program (FTP) to be applied to the reservation.
+      This entitles the user the opportunity to earn miles or points with ABG partners,
+      such as airlines, hotels and other select companies. For example, the Lufthansa
+      Miles & More Rewards Program. Surcharges may apply.
+    type: object
+    properties:
+      company_id:
+        description: The Frequent Traveler Program identifier of the airline, hotel,
+          or other select company.
+        type: string
+        example: AD
+      code:
+        description: The unique Frequent Traveler Program (FTP) number of the traveler.
+        type: string
+        example: M21R322
