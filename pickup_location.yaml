@@ -1,0 +1,25 @@
+---
+swagger: "2.0"
+info:
+  title: pickup_location
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  pickup_location:
+    title: Pickup Location
+    description: Rental car pickup location and address information.
+    required:
+    - address
+    type: object
+    properties:
+      location:
+        $ref: '#/definitions/location'
+        description: ""
+      address:
+        $ref: '#/definitions/address'
+        description: ""
+  address:
+    $ref: apicurio:91#/definitions/address
+  location:
+    $ref: apicurio:90#/definitions/location
