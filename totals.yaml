@@ -1,0 +1,42 @@
+---
+swagger: "2.0"
+info:
+  title: totals
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  totals:
+    title: Totals
+    description: The total reservation rate, taxes and fees for the entirety of the
+      reservation.
+    type: object
+    properties:
+      reservation_total:
+        description: Total cost of the reservation.
+        type: number
+      taxes_fees_total:
+        description: Total cost of the combined taxes and fees for the reservation.
+        type: number
+      taxes_total:
+        description: Total cost of taxes.
+        type: number
+      vehicle_total:
+        description: Total cost of the rental vehicle.
+        type: number
+      fees_total:
+        description: Total cost of fees.
+        type: number
+      extras_total:
+        description: Total cost of the specified ancillary products (such as GPS).
+        type: number
+      insurance_total:
+        description: Total cost of the specified rental insurance coverage.
+        type: number
+        example: 7
+      original_vehicle_total:
+        description: Original total cost of the rental vehicle.
+        type: number
+      original_reservation_total:
+        description: Original total cost of the reservation.
+        type: number
