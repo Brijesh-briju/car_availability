@@ -1,0 +1,23 @@
+---
+swagger: "2.0"
+info:
+  title: success_status
+  version: 1.0.0
+definitions:
+  success_status:
+    title: Success status
+    description: Success Status object
+    required:
+    - request_time
+    - success
+    type: object
+    properties:
+      request_time:
+        $ref: '#/definitions/date_time'
+        description: The time stamp of the request
+      success:
+        $ref: '#/definitions/success_details'
+  success_details:
+    $ref: apicurio:83#/definitions/success_details
+  date_time:
+    $ref: apicurio:84#/definitions/date_time
