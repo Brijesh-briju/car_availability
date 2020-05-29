@@ -1,0 +1,27 @@
+---
+swagger: "2.0"
+info:
+  title: rate_totals
+  version: 1.0.0
+definitions:
+  rate:
+    $ref: apicurio:102#/definitions/rate
+  totals:
+    $ref: apicurio:103#/definitions/totals
+  rate_totals:
+    title: Rates and Totals
+    description: The fees, rates and discounts applied to the reservation, with a
+      breakdown of the reservation total.
+    type: object
+    properties:
+      rate:
+        $ref: '#/definitions/rate'
+        description: ""
+      pay_later:
+        $ref: '#/definitions/totals'
+        description: The total reservation rate, taxes and fees for the entirety of
+          the reservation. This object is applicable only for Best Buy API.
+      totals:
+        $ref: '#/definitions/totals'
+        description: The total reservation rate, taxes and fees for the entirety of
+          the reservation. This object is applicable only for Rate Request API.
