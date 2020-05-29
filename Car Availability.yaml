@@ -1,0 +1,415 @@
+---
+swagger: "2.0"
+info:
+  title: Car Availability test
+  version: 1.0.0
+  description: |-
+    The Car Availability endpoint retrieves basic rate and availability information of a given rental car.
+
+    The response contains a vehicles array with each of the available vehicles that match the search criteria. This includes the base rate, and any discount, membership, and promotional coupons applied to the rate for the reservation.
+
+    The cars and rates returned by this endpoint are influenced by the age of the driver. The “age” or “date_of_birth” can be provided as parameters. If the “membership_code” is provided and the profile associated with that code has a valid date of birth, that will take precedence over any of the query parameters provided. The order of precedence for age calculations is: membership_code -> age -> date_of_birth.
+
+    What's next? Use the Car Rate endpoint to get a detailed rate.
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+produces:
+- application/json
+paths:
+  /v1/vehicles/rates:
+    get:
+      responses:
+        "200":
+          $ref: '#/responses/car_availability_raterequest_v1_response'
+          schema:
+            $ref: '#/definitions/car_availability_rate'
+          examples:
+            application/json:
+              status:
+                request_time: 2018-10-25T12:01:54Z
+                success:
+                - code: "200"
+                  message: Success
+                  details: The vehicle rate was successfully retrieved.
+              transaction:
+                transaction_id: "12313"
+              product:
+                brand: Avis
+              reservation:
+                distance:
+                  unlimited_distance: false
+                  distance_covered: 400
+                  distance_unit: Miles
+                  distance_overage: 0.15
+                pickup_location:
+                  location:
+                    code: EWR
+                    name: Newark Liberty Intl Airport
+                    telephone: (1) 973-961-4300
+                    hours: Sun-Sat 0:00 AM - 12:00 AM and 0:00 AM - 12:00 AM
+                    airport_location: true
+                  address:
+                    address_line_1: 28 Newark Airport
+                    address_line_2: Na
+                    address_line_3: Na
+                    city: Newark
+                    state_name: New Jersey
+                    postal_code: "07114"
+                    country_code: US
+                    lat: "40.690022"
+                    long: -74.187506
+                dropoff_location:
+                  location:
+                    code: EWR
+                    name: Newark Liberty Intl Airport
+                    telephone: (1) 973-961-4300
+                    hours: Sun-Sat 0:00 AM - 12:00 AM and 0:00 AM - 12:00 AM
+                    airport_location: true
+                  address:
+                    address_line_1: 28 Newark Airport
+                    address_line_2: Na
+                    address_line_3: Na
+                    city: Newark
+                    state_name: New Jersey
+                    postal_code: "07114"
+                    country_code: US
+                    lat: "40.690022"
+                    long: -74.187506
+                rate_totals:
+                  rate:
+                    currency: USD
+                    rate_code: DH
+                    days: 5
+                    hours: 0
+                    amount: 40
+                    discount:
+                      code: R566100
+                    loyalty:
+                      company_id: AD
+                      code: "2459804582"
+                    membership:
+                      code: S3Z91K
+                    coupon:
+                      code: MUZZ014
+                      type: MoneyOff
+                      description: 25USD Off with Rental of CSS/Paperless Coupon
+                      quantity: 1
+                      coupon_applied: true
+                      coupon_amount: 25
+                      coupon_extras:
+                      - code: CSS
+                        type: COUNTER_PROD
+                    taxes_fees:
+                      taxes:
+                      - type: Standard
+                        amount: 60.67
+                      - type: GST
+                        amount: 60.67
+                      fees:
+                      - amount: 56.24
+                        name: Concession Recovery Fee
+                      - amount: 1.5
+                        name: Concession Recovery Fee Sch
+                      - amount: 15
+                        name: Domestic Security Fee
+                      - amount: 1.8
+                        name: Energy Recovery Fee
+                      - amount: 7.5
+                        name: Transportation Facility Charge
+                      - amount: 3.03
+                        name: Vehicle License Fee
+                      - amount: 3.03
+                        name: Underage Surcharge
+                  totals:
+                    vehicle_total: 276
+                    taxes_fees_total: 145.74
+                    insurance_total: 148.92
+                    extras_total: 76.45
+                    reservation_total: 622.1
+                insurance:
+                - code: CDW
+                  name: Cover The Car (CDW)
+                  amount: 15
+                  total_owed: 75
+                  selection_note: DEFAULT
+                  selected: true
+                  tax_included: false
+                - code: ALI
+                  name: Cover My Liability (ALI)
+                  amount: 10
+                  total_owed: 50
+                  selection_note: DEFAULT
+                  selected: true
+                  tax_included: false
+                extras:
+                - code: GPS
+                  quantity: 1
+                  type: COUNTER_PROD
+                  amount: 13
+                  total_owed: 65
+                - code: CSS
+                  quantity: 1
+                  type: COUNTER_PROD
+                  amount: 7
+                  total_owed: 35
+                terms:
+                - type: location
+                  method: GET
+                  endpoint: https://stage.abgapiservices.com/terms/v1/location/Avis/US/EWR/en_US
+                disclaimers:
+                - type: Fuel Policy
+                  description: FUEL POLICY IS FULL TO FULL
+                - type: Underage Surcharge
+                  description: Under Age restrictions and fees apply. Please review
+                    location terms and conditions or contact location to confirm rental
+                    policies and fees.
+      summary: /v1/vehicles/rates
+    parameters:
+    - name: brand
+      description: The Avis, Budget, or Payless brand name.
+      in: query
+      required: true
+      type: string
+      enum:
+      - Avis
+      - Budget
+      - Payless
+    - name: pickup_date
+      description: ISO 8601 date and time of pickup.
+      in: query
+      required: true
+      type: string
+    - name: pickup_location
+      description: Rental car pickup location code
+      in: query
+      required: true
+      type: string
+    - name: dropoff_date
+      description: ISO 8601 date and time of dropoff.
+      in: query
+      required: true
+      type: string
+    - name: dropoff_location
+      description: Rental car dropoff location code.
+      in: query
+      required: true
+      type: string
+    - name: age
+      description: Driver’s age. This might influence the rates. Will be superseded
+        by date of birth found in the profile provided in “membership_code”.
+      in: query
+      type: number
+    - name: date_of_birth
+      description: Driver’s date of birth. This might influence the rates. Will be
+        superseded by “age” parameter or date of birth found in the profile provided
+        in “membership_code”
+      in: query
+      type: string
+      format: date
+    - name: country_code
+      description: 2-character ISO 3166 customer country code.
+      in: query
+      required: true
+      type: string
+      maxLength: 2
+      minLength: 2
+    - name: vehicle_class_code
+      description: The vehicle class code used to identify individual cars and trucks
+        according to size, axle numbers and type.
+      in: query
+      required: true
+      type: string
+    - name: rate_code
+      description: The vehicle rate code used to determine the rate for the reservation.
+      in: query
+      required: true
+      type: string
+    - name: membership_code
+      description: The Frequent Traveler Program (FTP) number. This entitles the customer
+        the opportunity to earn miles or points with ABG partners, including airlines,
+        hotels, and other select companies. For example, a Lufthansa Miles & More
+        Rewards number.
+      in: query
+      type: string
+    - name: discount_code
+      description: The rental vehicle brand discount code. This field can be an Avis
+        Worldwide Discount (AWD), Budget Car Discount (BCD), or a Payless Discount
+        Number (PDN) code.
+      in: query
+      type: string
+    - name: coupon_code
+      description: The promotional coupon code number to be applied to the reservation
+        rate.
+      in: query
+      type: string
+    - name: iata_number
+      description: International Air Transport Association (IATA) number. This is
+        an identifier used by travel agents that allows the rental car company to
+        pay the agent a commission for the rental.
+      in: query
+      type: string
+    - name: transaction_id
+      description: In the instance a request has failed, transaction identifiers allow
+        you to quickly identify the failed request. The following request transaction
+        identifier may be used by your application to identify a request. We recommend
+        that you use this identifier in every request.
+      in: query
+      type: string
+definitions:
+  car_availability_rate:
+    $ref: apicurio:81#/definitions/car_availability_rate
+responses:
+  car_availability_raterequest_v1_response:
+    description: ""
+    schema:
+      type: string
+    examples:
+      application/json:
+        status:
+          request_time: 2018-10-25T12:01:54Z
+          success:
+          - code: "200"
+            message: Success
+            details: The vehicle rate was successfully retrieved.
+        transaction:
+          transaction_id: "12313"
+        product:
+          brand: Avis
+        reservation:
+          distance:
+            unlimited_distance: false
+            distance_covered: 400
+            distance_unit: Miles
+            distance_overage: 0.15
+          pickup_location:
+            location:
+              code: EWR
+              name: Newark Liberty Intl Airport
+              telephone: (1) 973-961-4300
+              hours: Sun-Sat 0:00 AM - 12:00 AM and 0:00 AM - 12:00 AM
+              airport_location: true
+            address:
+              address_line_1: 28 Newark Airport
+              address_line_2: Na
+              address_line_3: Na
+              city: Newark
+              state_name: New Jersey
+              postal_code: "07114"
+              country_code: US
+              lat: "40.690022"
+              long: -74.187506
+          dropoff_location:
+            location:
+              code: EWR
+              name: Newark Liberty Intl Airport
+              telephone: (1) 973-961-4300
+              hours: Sun-Sat 0:00 AM - 12:00 AM and 0:00 AM - 12:00 AM
+              airport_location: true
+            address:
+              address_line_1: 28 Newark Airport
+              address_line_2: Na
+              address_line_3: Na
+              city: Newark
+              state_name: New Jersey
+              postal_code: "07114"
+              country_code: US
+              lat: "40.690022"
+              long: -74.187506
+          rate_totals:
+            rate:
+              currency: USD
+              rate_code: DH
+              days: 5
+              hours: 0
+              amount: 40
+              discount:
+                code: R566100
+              loyalty:
+                company_id: AD
+                code: "2459804582"
+              membership:
+                code: S3Z91K
+              coupon:
+                code: MUZZ014
+                type: MoneyOff
+                description: 25USD Off with Rental of CSS/Paperless Coupon
+                quantity: 1
+                coupon_applied: true
+                coupon_amount: 25
+                coupon_extras:
+                - code: CSS
+                  type: COUNTER_PROD
+              taxes_fees:
+                taxes:
+                - type: Standard
+                  amount: 60.67
+                - type: GST
+                  amount: 60.67
+                fees:
+                - amount: 56.24
+                  name: Concession Recovery Fee
+                - amount: 1.5
+                  name: Concession Recovery Fee Sch
+                - amount: 15
+                  name: Domestic Security Fee
+                - amount: 1.8
+                  name: Energy Recovery Fee
+                - amount: 7.5
+                  name: Transportation Facility Charge
+                - amount: 3.03
+                  name: Vehicle License Fee
+                - amount: 3.03
+                  name: Underage Surcharge
+            totals:
+              vehicle_total: 276
+              taxes_fees_total: 145.74
+              insurance_total: 148.92
+              extras_total: 76.45
+              reservation_total: 622.1
+          insurance:
+          - code: CDW
+            name: Cover The Car (CDW)
+            amount: 15
+            total_owed: 75
+            selection_note: DEFAULT
+            selected: true
+            tax_included: false
+          - code: ALI
+            name: Cover My Liability (ALI)
+            amount: 10
+            total_owed: 50
+            selection_note: DEFAULT
+            selected: true
+            tax_included: false
+          extras:
+          - code: GPS
+            quantity: 1
+            type: COUNTER_PROD
+            amount: 13
+            total_owed: 65
+          - code: CSS
+            quantity: 1
+            type: COUNTER_PROD
+            amount: 7
+            total_owed: 35
+          terms:
+          - type: location
+            method: GET
+            endpoint: https://stage.abgapiservices.com/terms/v1/location/Avis/US/EWR/en_US
+          disclaimers:
+          - type: Fuel Policy
+            description: FUEL POLICY IS FULL TO FULL
+          - type: Underage Surcharge
+            description: Under Age restrictions and fees apply. Please review location
+              terms and conditions or contact location to confirm rental policies
+              and fees.
+securityDefinitions:
+  oAUTH:
+    flow: application
+    tokenUrl: https://stage.abgapiservices.com/oauth/token/v1
+    scopes: {}
+    type: oauth2
+    description: This API supports OAuth 2.0 for authenticating all API requests.
+security:
+- oAUTH: []
