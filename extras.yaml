@@ -1,0 +1,100 @@
+---
+swagger: "2.0"
+info:
+  title: extras
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  extras:
+    title: Rental Extras
+    description: The ancillary products, special equipment, and other extras selected
+      as part of reservation.
+    type: array
+    items:
+      properties:
+        code:
+          description: The rental ancillary code used to identify and add rental vehicle
+            equipment and features to the reservation (such as GPS).
+          enum:
+          - ADD
+          - ADR
+          - AFO
+          - ATC
+          - BBS
+          - BKF
+          - BKR
+          - BXL
+          - BXM
+          - BXS
+          - CBS
+          - CCO
+          - CCP
+          - CFS
+          - CHG
+          - CIS
+          - CNP
+          - CSD
+          - CSS
+          - DCF
+          - DEC
+          - DIE
+          - DIS
+          - EPU
+          - ESP
+          - FRD
+          - FSK
+          - GEL
+          - GPS
+          - GSO
+          - HDL
+          - ICW
+          - INC
+          - IP5
+          - IXB
+          - MPG
+          - NAV
+          - NSF
+          - PAC
+          - RSN
+          - SKI
+          - SKR
+          - SNC
+          - SNW
+          - STA
+          - TAB
+          - TCT
+          - TPR
+          - TRO
+          - VCD
+          - WFI
+          - XMR
+          - BAT
+          - CSB
+          type: string
+          example: GPS
+        quantity:
+          description: The number of ancillary products to add to the reservation.
+            For example, if a value of 2 is specified for quantity, and a code of
+            CSS, then two child safety seats will be added to the reservation.
+          default: 1
+          minimum: 0
+          type: number
+        type:
+          description: The type of ancillary product specified in the request. If
+            a code of child safety seat (CSS) is specified in the request, then a
+            value of SPEC_EQUIP will be returned in the response.
+          enum:
+          - COUNTER_PROD
+          - SPEC_EQUIP
+          - UPSELL
+          type: string
+        amount:
+          description: The price of the ancillary product.
+          type: number
+          example: 19.99
+        total_owed:
+          description: The total price of the ancillary product for the entirety of
+            the reservation period.
+          type: number
+          example: 65
