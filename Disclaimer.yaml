@@ -1,0 +1,22 @@
+---
+swagger: "2.0"
+info:
+  title: Disclaimer
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  Disclaimer:
+    title: Disclaimer
+    description: ' This contains the addtional information'
+    type: object
+    properties:
+      type:
+        title: Disclaimer name
+        enum:
+        - Fuel Policy
+        - Underage Surcharge
+        type: string
+      description:
+        title: Disclaimer comment
+        type: string
