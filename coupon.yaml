@@ -1,0 +1,52 @@
+---
+swagger: "2.0"
+info:
+  title: coupon
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  coupon:
+    title: Coupon Codes
+    description: A promotional coupon that can be applied to a reservation for discounts,
+      upgrades, free days, or other promotional offers.
+    type: object
+    properties:
+      code:
+        description: The coupon code to be applied to the reservation rate.
+        type: string
+        example: MUZZ014
+      type:
+        description: The type of coupon that corresponds to the coupon code.
+        enum:
+        - MoneyOff
+        - GasOff
+        - DaysOff
+        - Upgrade
+        type: string
+      description:
+        description: Description of the coupon code that was specified in the request.
+        type: string
+        example: 25USD Off with Rental of CSS/Paperless Coupon
+      quantity:
+        description: The number of coupon codes to apply to the reservation.
+        type: number
+        example: 1
+      coupon_applied:
+        description: Indicates that a coupon code is valid and was successfully applied
+          for the reservation.
+        type: boolean
+        example: false
+      coupon_amount:
+        description: The amount of the coupon discount applied to the cost of the
+          reservation.
+        type: number
+        example: 0
+      coupon_extras:
+        $ref: '#/definitions/extras'
+        title: Rental Extras
+        description: The ancillary products tied to the coupon. For example, if the
+          coupon code specified in the request applies to the cost of a child safety
+          seat, then CSS will be returned in this field.
+  extras:
+    $ref: apicurio:100#/definitions/extras
