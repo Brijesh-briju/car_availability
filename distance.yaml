@@ -1,0 +1,33 @@
+---
+swagger: "2.0"
+info:
+  title: distance
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  distance:
+    title: Reservation Distance Limitations
+    description: Information about rental vehicle reservation distance options and
+      limitations. If a reservation includes limited distance, then the distance covered
+      is returned in distance_covered and the rate if the distance is exceeded is
+      returned in distance_overage.
+    type: object
+    properties:
+      unlimited_distance:
+        description: Indicates whether the reservation distance is unlimited.
+        type: boolean
+        example: true
+      distance_covered:
+        description: The free distance covered for the duration of the rental period.
+        type: number
+        example: 500
+      distance_unit:
+        description: The unit of distance.
+        type: string
+        example: miles
+      distance_overage:
+        description: The cost per distance unit if the free distance in distance_covered
+          is exceeded.
+        type: number
+        example: 0.15
