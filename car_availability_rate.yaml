@@ -1,0 +1,36 @@
+---
+swagger: "2.0"
+info:
+  title: car_availability_rate
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  car_availability_rate:
+    title: 201 Created Response
+    description: The following demonstrates an example of a successful response for
+      the Car Rate endpoint.
+    type: object
+    properties:
+      status:
+        $ref: '#/definitions/status'
+        description: ""
+      transaction:
+        $ref: '#/definitions/transaction'
+        description: ""
+      product:
+        $ref: '#/definitions/product'
+        description: ""
+      reservation:
+        $ref: '#/definitions/reservation'
+        description: ""
+  status:
+    $ref: apicurio:86#/definitions/status
+  success_status:
+    $ref: apicurio:85#/definitions/success_status
+  transaction:
+    $ref: apicurio:88#/definitions/transaction
+  product:
+    $ref: apicurio:82#/definitions/product
+  reservation:
+    $ref: apicurio:127#/definitions/reservation
