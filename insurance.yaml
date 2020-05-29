@@ -1,0 +1,69 @@
+---
+swagger: "2.0"
+info:
+  title: insurance
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  insurance:
+    title: Rental Insurance Coverage
+    description: The insurance coverage to be applied to the entirety of the reservation.
+      Types of insurance includes Cover The Car (CDW), Cover My Liability (ALI), Cover
+      Myself (PAI), and Cover My Belongings (PEP), Package (PKG). If insurance coverage
+      is specified in the request, taxes are included in the total cost (in total_owed).
+      Any preselected insurance coverage specified by a user within their wizard profile
+      should be passed in the request. For example, if the user has selected Cover
+      My Belongings (PEP) in their profile, then pass PEP.
+    type: array
+    items:
+      properties:
+        code:
+          description: 3-character code of the insurance coverage.
+          enum:
+          - CDW
+          - PAI
+          - PEP
+          - ALI
+          - PKG
+          type: string
+          example: CDW
+        name:
+          description: Name of the insurance coverage code/type.
+          enum:
+          - Cover The Car (CDW)
+          - Cover My Liability (ALI)
+          - Cover Myself (PAI)
+          - Cover My Belongings (PEP)
+          - Package (PKG)
+          type: string
+          example: Cover The Car (CDW)
+        amount:
+          description: The daily cost of the specified insurance coverage.
+          type: number
+          example: 15
+        total_owed:
+          description: Total owed of the specified insurance coverage for the entirety
+            of the reservation.
+          type: number
+          example: 75
+        selection_note:
+          description: Indicates whether rental vehicle insurance coverage is included
+            by DEFAULT (as applicable in select countries), or whether additional
+            coverage specified by the user has been ACCEPTED, or DECLINED. There may
+            be some countries that include the cost of insurance by DEFAULT. If a
+            value of DEFAULT is returned, then the value in total_owed will be 0.
+            If the user specifies additional insurance coverage, then the value in
+            this field will be returned as ACCEPTED or DECLINED.
+          type: string
+          example: DEFAULT
+        selected:
+          description: Indicates whether insurance coverage has been selected by the
+            user for the reservation. If the specified insurance coverage is accepted,
+            a value of ACCEPTED will be returned in selection_note.
+          type: boolean
+          example: true
+        tax_included:
+          description: Indicates whether taxes are included in the cost (in total_owed).
+          type: boolean
+          example: true
