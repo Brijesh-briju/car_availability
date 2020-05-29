@@ -1,0 +1,14 @@
+---
+swagger: "2.0"
+info:
+  title: transaction_id
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  transaction_id:
+    title: Transaction identifier
+    description: The transaction identifier used to identify and troubleshoot a given
+      request.
+    type: string
+    example: 391117cf-4470-4353-8b51-f00c3c098943
