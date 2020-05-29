@@ -1,0 +1,79 @@
+---
+swagger: "2.0"
+info:
+  title: rate
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  taxes_fees:
+    $ref: apicurio:97#/definitions/taxes_fees
+  discount:
+    $ref: apicurio:94#/definitions/discount
+  loyalty:
+    $ref: apicurio:98#/definitions/loyalty
+  membership:
+    $ref: apicurio:99#/definitions/membership
+  coupon:
+    $ref: apicurio:101#/definitions/coupon
+  rate:
+    title: Reservation Rates
+    description: The reservation rate qualifiers that determine the rate of the reservation
+      in the localized currency.
+    type: object
+    properties:
+      currency:
+        description: The currency to be applied to the rate code. Currency is generally
+          based on the rental vehicle pick-up/drop-off location.
+        type: string
+        example: USD
+      rate_code:
+        description: The rental vehicle rate code used to determine the rate of the
+          rental vehicle reservation.
+        type: string
+      country_code:
+        description: 2-character ISO 3166 customer country code.
+        maxLength: 2
+        minLength: 2
+        type: string
+      days:
+        description: The number of days of the reservation.
+        type: number
+        example: 2
+      hours:
+        description: The number of hours of the reservation (after days).
+        type: number
+        example: 0
+      amount:
+        description: The reservation rate of the rental vehicle.
+        type: number
+      coupon_applied:
+        description: Indicates that a coupon discount was successfully applied for
+          the reservation.
+        type: boolean
+        example: true
+      under_age_fee_applied:
+        title: Under age fee
+        description: This field indicates the young driver fee applicability to the
+          vehicle rate.
+        type: boolean
+      coupon_discount_amount:
+        description: The amount of the coupon discount applied to the cost of the
+          reservation.
+        type: number
+        example: 15
+      discount:
+        $ref: '#/definitions/discount'
+        description: ""
+      loyalty:
+        $ref: '#/definitions/loyalty'
+        description: ""
+      membership:
+        $ref: '#/definitions/membership'
+        description: ""
+      coupon:
+        $ref: '#/definitions/coupon'
+        description: ""
+      taxes_fees:
+        $ref: '#/definitions/taxes_fees'
+        description: ""
