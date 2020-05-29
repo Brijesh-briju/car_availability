@@ -1,0 +1,35 @@
+---
+swagger: "2.0"
+info:
+  title: location
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  location:
+    title: Location Details
+    description: Rental car address information of the product location.
+    type: object
+    properties:
+      code:
+        description: 3-5 character alphanumeric location or airport code.
+        type: string
+        example: BOS
+      name:
+        description: Name of the product location.
+        type: string
+        example: Boston Logan Intl Airport
+      hours:
+        title: Operation hours
+        description: Operating hours of the product location.
+        type: string
+        example: Sun-Sat 0:00 AM - 12:00 AM and 0:00 AM - 12:00 AM
+      airport_location:
+        title: Airport location
+        description: Indicates whether the product location is an airport.
+        type: boolean
+        example: true
+      telephone:
+        description: Phone number of the product location.
+        type: string
+        example: 617-568-6600
