@@ -1,0 +1,59 @@
+---
+swagger: "2.0"
+info:
+  title: address
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  address:
+    title: Address
+    description: Address information that you would like to associate to the user
+      that is requesting the rental vehicle reservation, including geographic coordinates
+      (if applicable)
+    required:
+    - city
+    - country_code
+    - lat
+    - long
+    type: object
+    properties:
+      address_line_1:
+        description: Address (line 1) of the user.
+        type: string
+        example: 1534 Meadow Drive
+      address_line_2:
+        description: Address (line 2) of the user.
+        type: string
+        example: 2nd Floor
+      address_line_3:
+        description: Address (line 3) of the user.
+        type: string
+        example: Suite 235
+      city:
+        description: City name of the user.
+        type: string
+        example: Boston
+      state_name:
+        description: State name of the user (if applicable).
+        type: string
+        example: Massachusetts
+      postal_code:
+        description: Numeric or alphanumeric postal code of the user, which varies
+          by country (02128 or CT3).
+        type: string
+        example: W16PR
+      country_code:
+        description: 2-letter ISO 3166 country code of the user.
+        maxLength: 2
+        minLength: 2
+        type: string
+        example: US
+      lat:
+        description: Geographic latitude of the location.
+        type: string
+        example: "40.690022"
+      long:
+        description: Geographic longitude of the location.
+        type: string
+        example: -74.187506
