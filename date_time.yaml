@@ -1,0 +1,12 @@
+---
+swagger: "2.0"
+info:
+  title: date_time
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  date_time:
+    description: ISO 8601 representation of the date time.
+    type: datetime
+    example: 2015-07-04T21:00:00.000Z
