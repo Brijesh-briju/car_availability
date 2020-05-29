@@ -1,0 +1,20 @@
+---
+swagger: "2.0"
+info:
+  title: discount
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  discount:
+    title: Brand Discounts
+    description: The rental vehicle brand rewards program code (also known as discount
+      code) to be applied to the rate of the reservation.
+    type: object
+    properties:
+      code:
+        description: The rental vehicle brand discount code. This field can be an
+          Avis Worldwide Discount (AWD), Budget Car Discount (BCD), or a Payless Discount
+          Number (PDN) code.
+        type: string
+        example: R566100
