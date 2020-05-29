@@ -1,0 +1,24 @@
+---
+swagger: "2.0"
+info:
+  title: transaction
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  transaction:
+    title: Transaction
+    description: Transaction details that may be used by your application to identify
+      a request.
+    type: object
+    properties:
+      id:
+        $ref: '#/definitions/transaction_id'
+      system_id:
+        title: Internal correlation  identifier
+        description: A unique identifier generated internally by the application to
+          identify the payload and troubleshoot.
+        type: string
+        example: i9332ffa-5250-11e9-8647-d663bd873d78
+  transaction_id:
+    $ref: apicurio:87#/definitions/transaction_id
