@@ -1,0 +1,18 @@
+---
+swagger: "2.0"
+info:
+  title: membership
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  membership:
+    title: Brand Membership
+    description: The personal brand identification information of the user for the
+      Avis, Budget or Payless user profile.
+    type: object
+    properties:
+      code:
+        description: The brand membership program code. This can be an Avis wizard
+          number, Budget customer number, or Payless Perks number.
+        type: string
