@@ -1,0 +1,680 @@
+---
+swagger: "2.0"
+info:
+  title: car_availability_library
+  version: 1.0.0
+paths:
+  /v1: {}
+definitions:
+  taxes:
+    title: Rental Taxes
+    description: Taxes applied to the reservation in the localized currency.
+    type: array
+    items:
+      properties:
+        type:
+          description: The type of taxation to be applied.
+          enum:
+          - Standard
+          - GST
+          type: string
+          example: GST
+        amount:
+          description: The cost of taxes for the reservation.
+          type: number
+  fees:
+    title: Fees
+    description: "Fees applied to the reservation. All available fees\r\nand surcharges\
+      \ are returned in the response. Some of these fees are included in the rate,\
+      \ and others are for information purposes only, as they may apply but are not\
+      \ included in the total tax amount."
+    type: array
+    items:
+      properties:
+        amount:
+          description: The cost of fees applied.
+          type: number
+        name:
+          description: The name of the type of fee(s) applied.
+          type: string
+          example: Domestic Security Fee
+  taxes_fees:
+    title: Rental Taxes & Fees
+    description: All available rental taxes and fees applied to the reservation
+    type: object
+    properties:
+      taxes:
+        $ref: '#/definitions/taxes'
+        description: ""
+      fees:
+        $ref: '#/definitions/fees'
+        description: ""
+  extras:
+    title: Rental Extras
+    description: The ancillary products, special equipment, and other extras selected
+      as part of reservation.
+    type: array
+    items:
+      properties:
+        code:
+          description: The rental ancillary code used to identify and add rental vehicle
+            equipment and features to the reservation (such as GPS).
+          enum:
+          - ADD
+          - ADR
+          - AFO
+          - ATC
+          - BBS
+          - BKF
+          - BKR
+          - BXL
+          - BXM
+          - BXS
+          - CBS
+          - CCO
+          - CCP
+          - CFS
+          - CHG
+          - CIS
+          - CNP
+          - CSD
+          - CSS
+          - DCF
+          - DEC
+          - DIE
+          - DIS
+          - EPU
+          - ESP
+          - FRD
+          - FSK
+          - GEL
+          - GPS
+          - GSO
+          - HDL
+          - ICW
+          - INC
+          - IP5
+          - IXB
+          - MPG
+          - NAV
+          - NSF
+          - PAC
+          - RSN
+          - SKI
+          - SKR
+          - SNC
+          - SNW
+          - STA
+          - TAB
+          - TCT
+          - TPR
+          - TRO
+          - VCD
+          - WFI
+          - XMR
+          - BAT
+          - CSB
+          type: string
+          example: GPS
+        quantity:
+          description: The number of ancillary products to add to the reservation.
+            For example, if a value of 2 is specified for quantity, and a code of
+            CSS, then two child safety seats will be added to the reservation.
+          default: 1
+          minimum: 0
+          type: number
+        type:
+          description: The type of ancillary product specified in the request. If
+            a code of child safety seat (CSS) is specified in the request, then a
+            value of SPEC_EQUIP will be returned in the response.
+          enum:
+          - COUNTER_PROD
+          - SPEC_EQUIP
+          - UPSELL
+          type: string
+        amount:
+          description: The price of the ancillary product.
+          type: number
+          example: 19.99
+        total_owed:
+          description: The total price of the ancillary product for the entirety of
+            the reservation period.
+          type: number
+          example: 65
+  coupon:
+    title: Coupon Codes
+    description: A promotional coupon that can be applied to a reservation for discounts,
+      upgrades, free days, or other promotional offers.
+    type: object
+    properties:
+      code:
+        description: The coupon code to be applied to the reservation rate.
+        type: string
+        example: MUZZ014
+      type:
+        description: The type of coupon that corresponds to the coupon code.
+        enum:
+        - MoneyOff
+        - GasOff
+        - DaysOff
+        - Upgrade
+        type: string
+      description:
+        description: Description of the coupon code that was specified in the request.
+        type: string
+        example: 25USD Off with Rental of CSS/Paperless Coupon
+      quantity:
+        description: The number of coupon codes to apply to the reservation.
+        type: number
+        example: 1
+      coupon_applied:
+        description: Indicates that a coupon code is valid and was successfully applied
+          for the reservation.
+        type: boolean
+        example: false
+      coupon_amount:
+        description: The amount of the coupon discount applied to the cost of the
+          reservation.
+        type: number
+        example: 0
+      coupon_extras:
+        $ref: '#/definitions/extras'
+        title: Rental Extras
+        description: The ancillary products tied to the coupon. For example, if the
+          coupon code specified in the request applies to the cost of a child safety
+          seat, then CSS will be returned in this field.
+  discount:
+    title: Brand Discounts
+    description: The rental vehicle brand rewards program code (also known as discount
+      code) to be applied to the rate of the reservation.
+    type: object
+    properties:
+      code:
+        description: The rental vehicle brand discount code. This field can be an
+          Avis Worldwide Discount (AWD), Budget Car Discount (BCD), or a Payless Discount
+          Number (PDN) code.
+        type: string
+        example: R566100
+  loyalty:
+    title: Frequent Traveler Programs (FTPs)
+    description: The Frequent Traveler Program (FTP) to be applied to the reservation.
+      This entitles the user the opportunity to earn miles or points with ABG partners,
+      such as airlines, hotels and other select companies. For example, the Lufthansa
+      Miles & More Rewards Program. Surcharges may apply.
+    type: object
+    properties:
+      company_id:
+        description: The Frequent Traveler Program identifier of the airline, hotel,
+          or other select company.
+        type: string
+        example: AD
+      code:
+        description: The unique Frequent Traveler Program (FTP) number of the traveler.
+        type: string
+        example: M21R322
+  membership:
+    title: Brand Membership
+    description: The personal brand identification information of the user for the
+      Avis, Budget or Payless user profile.
+    type: object
+    properties:
+      code:
+        description: The brand membership program code. This can be an Avis wizard
+          number, Budget customer number, or Payless Perks number.
+        type: string
+  rate:
+    title: Reservation Rates
+    description: The reservation rate qualifiers that determine the rate of the reservation
+      in the localized currency.
+    type: object
+    properties:
+      currency:
+        description: The currency to be applied to the rate code. Currency is generally
+          based on the rental vehicle pick-up/drop-off location.
+        type: string
+        example: USD
+      rate_code:
+        description: The rental vehicle rate code used to determine the rate of the
+          rental vehicle reservation.
+        type: string
+      country_code:
+        description: 2-character ISO 3166 customer country code.
+        maxLength: 2
+        minLength: 2
+        type: string
+      days:
+        description: The number of days of the reservation.
+        type: number
+        example: 2
+      hours:
+        description: The number of hours of the reservation (after days).
+        type: number
+        example: 0
+      amount:
+        description: The reservation rate of the rental vehicle.
+        type: number
+      coupon_applied:
+        description: Indicates that a coupon discount was successfully applied for
+          the reservation.
+        type: boolean
+        example: true
+      under_age_fee_applied:
+        title: Under age fee
+        description: This field indicates the young driver fee applicability to the
+          vehicle rate.
+        type: boolean
+      coupon_discount_amount:
+        description: The amount of the coupon discount applied to the cost of the
+          reservation.
+        type: number
+        example: 15
+      discount:
+        $ref: '#/definitions/discount'
+        description: ""
+      loyalty:
+        $ref: '#/definitions/loyalty'
+        description: ""
+      membership:
+        $ref: '#/definitions/membership'
+        description: ""
+      coupon:
+        $ref: '#/definitions/coupon'
+        description: ""
+      taxes_fees:
+        $ref: '#/definitions/taxes_fees'
+        description: ""
+  totals:
+    title: Totals
+    description: The total reservation rate, taxes and fees for the entirety of the
+      reservation.
+    type: object
+    properties:
+      reservation_total:
+        description: Total cost of the reservation.
+        type: number
+      taxes_fees_total:
+        description: Total cost of the combined taxes and fees for the reservation.
+        type: number
+      taxes_total:
+        description: Total cost of taxes.
+        type: number
+      vehicle_total:
+        description: Total cost of the rental vehicle.
+        type: number
+      fees_total:
+        description: Total cost of fees.
+        type: number
+      extras_total:
+        description: Total cost of the specified ancillary products (such as GPS).
+        type: number
+      insurance_total:
+        description: Total cost of the specified rental insurance coverage.
+        type: number
+        example: 7
+      original_vehicle_total:
+        description: Original total cost of the rental vehicle.
+        type: number
+      original_reservation_total:
+        description: Original total cost of the reservation.
+        type: number
+  rate_totals:
+    title: Rates and Totals
+    description: The fees, rates and discounts applied to the reservation, with a
+      breakdown of the reservation total.
+    type: object
+    properties:
+      rate:
+        $ref: '#/definitions/rate'
+        description: ""
+      pay_later:
+        $ref: '#/definitions/totals'
+        description: The total reservation rate, taxes and fees for the entirety of
+          the reservation. This object is applicable only for Best Buy API.
+      totals:
+        $ref: '#/definitions/totals'
+        description: The total reservation rate, taxes and fees for the entirety of
+          the reservation. This object is applicable only for Rate Request API.
+  location:
+    title: Location Details
+    description: Rental car address information of the product location.
+    type: object
+    properties:
+      code:
+        description: 3-5 character alphanumeric location or airport code.
+        type: string
+        example: BOS
+      name:
+        description: Name of the product location.
+        type: string
+        example: Boston Logan Intl Airport
+      hours:
+        title: Operation hours
+        description: Operating hours of the product location.
+        type: string
+        example: Sun-Sat 0:00 AM - 12:00 AM and 0:00 AM - 12:00 AM
+      airport_location:
+        title: Airport location
+        description: Indicates whether the product location is an airport.
+        type: boolean
+        example: true
+      telephone:
+        description: Phone number of the product location.
+        type: string
+        example: 617-568-6600
+  address:
+    title: Address
+    description: Address information that you would like to associate to the user
+      that is requesting the rental vehicle reservation, including geographic coordinates
+      (if applicable)
+    required:
+    - city
+    - country_code
+    - lat
+    - long
+    type: object
+    properties:
+      address_line_1:
+        description: Address (line 1) of the user.
+        type: string
+        example: 1534 Meadow Drive
+      address_line_2:
+        description: Address (line 2) of the user.
+        type: string
+        example: 2nd Floor
+      address_line_3:
+        description: Address (line 3) of the user.
+        type: string
+        example: Suite 235
+      city:
+        description: City name of the user.
+        type: string
+        example: Boston
+      state_name:
+        description: State name of the user (if applicable).
+        type: string
+        example: Massachusetts
+      postal_code:
+        description: Numeric or alphanumeric postal code of the user, which varies
+          by country (02128 or CT3).
+        type: string
+        example: W16PR
+      country_code:
+        description: 2-letter ISO 3166 country code of the user.
+        maxLength: 2
+        minLength: 2
+        type: string
+        example: US
+      lat:
+        description: Geographic latitude of the location.
+        type: string
+        example: "40.690022"
+      long:
+        description: Geographic longitude of the location.
+        type: string
+        example: -74.187506
+  dropoff_location:
+    title: Dropoff Location
+    description: Rental car dropoff location and address information.
+    required:
+    - address
+    type: object
+    properties:
+      location:
+        $ref: '#/definitions/location'
+        description: ""
+      address:
+        $ref: '#/definitions/address'
+        description: ""
+  pickup_location:
+    title: Pickup Location
+    description: Rental car pickup location and address information.
+    required:
+    - address
+    type: object
+    properties:
+      location:
+        $ref: '#/definitions/location'
+        description: ""
+      address:
+        $ref: '#/definitions/address'
+        description: ""
+  distance:
+    title: Reservation Distance Limitations
+    description: Information about rental vehicle reservation distance options and
+      limitations. If a reservation includes limited distance, then the distance covered
+      is returned in distance_covered and the rate if the distance is exceeded is
+      returned in distance_overage.
+    type: object
+    properties:
+      unlimited_distance:
+        description: Indicates whether the reservation distance is unlimited.
+        type: boolean
+        example: true
+      distance_covered:
+        description: The free distance covered for the duration of the rental period.
+        type: number
+        example: 500
+      distance_unit:
+        description: The unit of distance.
+        type: string
+        example: miles
+      distance_overage:
+        description: The cost per distance unit if the free distance in distance_covered
+          is exceeded.
+        type: number
+        example: 0.15
+  Disclaimer:
+    title: Disclaimer
+    description: ' This contains the addtional information'
+    type: object
+    properties:
+      type:
+        title: Disclaimer name
+        enum:
+        - Fuel Policy
+        - Underage Surcharge
+        type: string
+      description:
+        title: Disclaimer comment
+        type: string
+  transaction_id:
+    title: Transaction identifier
+    description: The transaction identifier used to identify and troubleshoot a given
+      request.
+    type: string
+    example: 391117cf-4470-4353-8b51-f00c3c098943
+  transaction:
+    title: Transaction
+    description: Transaction details that may be used by your application to identify
+      a request.
+    type: object
+    properties:
+      id:
+        $ref: '#/definitions/transaction_id'
+      system_id:
+        title: Internal correlation  identifier
+        description: A unique identifier generated internally by the application to
+          identify the payload and troubleshoot.
+        type: string
+        example: i9332ffa-5250-11e9-8647-d663bd873d78
+  date_time:
+    description: ISO 8601 representation of the date time.
+    type: datetime
+    example: 2015-07-04T21:00:00.000Z
+  success_details:
+    title: Success details
+    description: Success response metadata for all the rest APIs.
+    type: array
+    items:
+      type: object
+      properties:
+        code:
+          description: The HTTP status code value
+          type: string
+        message:
+          description: The HTTP status code message
+          type: string
+        details:
+          description: Description of the success status
+          type: string
+  success_status:
+    title: Success status
+    description: Success Status object
+    required:
+    - request_time
+    - success
+    type: object
+    properties:
+      request_time:
+        $ref: '#/definitions/date_time'
+        description: The time stamp of the request
+      success:
+        $ref: '#/definitions/success_details'
+  status:
+    $ref: '#/definitions/success_status'
+    title: Request Status
+    description: A container for the success/error details.
+  product:
+    title: Product Brand
+    description: The rental car product brand name information for the reservation.
+    required:
+    - brand
+    type: object
+    properties:
+      brand:
+        description: The Avis, Budget, or Payless brand name.
+        enum:
+        - Avis
+        - Budget
+        - Payless
+        example: Avis
+  reservation:
+    title: Reservation Confirmation
+    description: Confirmation information of the availability request for the rental
+      vehicle reservation, including the rate, distance limitations, and rental extras
+      (such as GPS).
+    type: object
+    properties:
+      distance:
+        $ref: '#/definitions/distance'
+        description: ""
+      pickup_location:
+        $ref: '#/definitions/pickup_location'
+        description: ""
+      dropoff_location:
+        $ref: '#/definitions/dropoff_location'
+        description: ""
+      rate_totals:
+        $ref: '#/definitions/rate_totals'
+        description: ""
+      insurance:
+        $ref: '#/definitions/insurance'
+        description: ""
+      extras:
+        $ref: '#/definitions/extras'
+        description: ""
+      terms:
+        $ref: '#/definitions/terms'
+        description: ""
+      disclaimers:
+        $ref: '#/definitions/Disclaimer'
+        description: ""
+  insurance:
+    title: Rental Insurance Coverage
+    description: The insurance coverage to be applied to the entirety of the reservation.
+      Types of insurance includes Cover The Car (CDW), Cover My Liability (ALI), Cover
+      Myself (PAI), and Cover My Belongings (PEP), Package (PKG). If insurance coverage
+      is specified in the request, taxes are included in the total cost (in total_owed).
+      Any preselected insurance coverage specified by a user within their wizard profile
+      should be passed in the request. For example, if the user has selected Cover
+      My Belongings (PEP) in their profile, then pass PEP.
+    type: array
+    items:
+      properties:
+        code:
+          description: 3-character code of the insurance coverage.
+          enum:
+          - CDW
+          - PAI
+          - PEP
+          - ALI
+          - PKG
+          type: string
+          example: CDW
+        name:
+          description: Name of the insurance coverage code/type.
+          enum:
+          - Cover The Car (CDW)
+          - Cover My Liability (ALI)
+          - Cover Myself (PAI)
+          - Cover My Belongings (PEP)
+          - Package (PKG)
+          type: string
+          example: Cover The Car (CDW)
+        amount:
+          description: The daily cost of the specified insurance coverage.
+          type: number
+          example: 15
+        total_owed:
+          description: Total owed of the specified insurance coverage for the entirety
+            of the reservation.
+          type: number
+          example: 75
+        selection_note:
+          description: Indicates whether rental vehicle insurance coverage is included
+            by DEFAULT (as applicable in select countries), or whether additional
+            coverage specified by the user has been ACCEPTED, or DECLINED. There may
+            be some countries that include the cost of insurance by DEFAULT. If a
+            value of DEFAULT is returned, then the value in total_owed will be 0.
+            If the user specifies additional insurance coverage, then the value in
+            this field will be returned as ACCEPTED or DECLINED.
+          type: string
+          example: DEFAULT
+        selected:
+          description: Indicates whether insurance coverage has been selected by the
+            user for the reservation. If the specified insurance coverage is accepted,
+            a value of ACCEPTED will be returned in selection_note.
+          type: boolean
+          example: true
+        tax_included:
+          description: Indicates whether taxes are included in the cost (in total_owed).
+          type: boolean
+          example: true
+  terms:
+    description: Terms and Condition
+    type: array
+    items:
+      properties:
+        type:
+          enum:
+          - location
+          - rental
+          - reservation
+          type: string
+        method:
+          enum:
+          - GET
+          type: string
+        endpoint:
+          description: End Point to call to get the terms and condition. Host name
+            will be chnaged based on environment
+          type: string
+          example: https://stage.abgapiservices.com/terms/v1/location/avis/US/EWR/en_US
+  car_availability_rate:
+    title: 201 Created Response
+    description: The following demonstrates an example of a successful response for
+      the Car Rate endpoint.
+    type: object
+    properties:
+      status:
+        $ref: '#/definitions/status'
+        description: ""
+      transaction:
+        $ref: '#/definitions/transaction'
+        description: ""
+      product:
+        $ref: '#/definitions/product'
+        description: ""
+      reservation:
+        $ref: '#/definitions/reservation'
+        description: ""
